@@ -241,6 +241,8 @@ class Cereal:
 
         if ON_ANDROID:
             os.system(f'termux-open {png_file}')
+        else:
+            plt.show()
 
     # Predict.
     def predict(self, string):

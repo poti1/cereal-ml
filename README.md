@@ -1,86 +1,156 @@
-# Cereal Calorie Predictor
+# cereal-ml
 
-A PyTorch neural network that predicts cereal calorie content from nutritional ingredients.
+Simple PyTorch-based calorie prediction using cereal nutrition data.
 
-Built as a hands-on ML exercise covering the full pipeline: data preprocessing, model training, evaluation, and prediction.
-
----
-
-## What it does
-
-- Trains a neural network on the [80 Cereals dataset](https://www.kaggle.com/datasets/crawford/80-cereals)
-- Predicts calories from ingredients like fat, sugar, protein, sodium, etc.
-- Caches the trained model so it only trains once
-- Supports custom predictions via command line or Python REPL
+Predict cereal calories from nutritional features using:
+- CLI commands
+- Python API calls
+- Trained PyTorch models
 
 ---
 
-## Stack
+## Features
 
-- Python, PyTorch, scikit-learn, pandas, NumPy, matplotlib
+- Train calorie prediction model from cereal nutrition data
+- Save/load PyTorch models
+- CLI predictions
+- Python API predictions
+- Loss plotting
+- MAE evaluation
+- Simple custom feature parser
 
 ---
 
-## Setup
+## Installation
+
+Clone the repo:
 
 ```bash
-pip install torch scikit-learn pandas numpy matplotlib joblib
+git clone https://github.com/poti1/cereal-ml.git
+cd cereal-ml
 ```
 
-Download `cereal.csv` from [Kaggle](https://www.kaggle.com/datasets/crawford/80-cereals) and place it in the project folder.
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
 
 ---
 
-## Usage
+## Training
 
-**Train the model:**
+Train the model:
+
 ```bash
-python cereal.py --train
+./cereal.py --train
 ```
 
-**Run on test data (uses cached model):**
-```bash
-python cereal.py
-```
+Example output:
 
-**Plot the loss curve:**
-```bash
-python cereal.py --plot
-```
+![Training](demo/train.jpg)
 
-**Predict with custom ingredients:**
-```bash
-python cereal.py --data 'sugars=3, protein=5'
-python cereal.py --data 'fat=10, sodium=20, carbo=15'
-```
+Example training metrics:
 
-Unspecified fields default to the training set median.
+```text
+Epoch 1/10  loss: 104.8351  val_loss: 111.3147
+...
+Epoch 10/10 loss: 25.8951  val_loss: 27.3140
+
+mae: 28.50
+```
 
 ---
 
-## Results
+## CLI Prediction
 
-Mean Absolute Error: ~28 calories on the test set.
+Run predictions directly from the command line:
 
-![Loss curve](loss.png)
+```bash
+./cereal.py --data 'sugars=3, protein=5'
+```
+
+Example:
+
+![CLI Prediction](demo/query.png)
 
 ---
 
-## How it works
+## Python API Usage
 
-1. Loads and splits data into train / validation / test sets
-2. Builds a preprocessing pipeline (median imputation + scaling for numeric, one-hot for categorical)
-3. Trains a fully connected neural network with early stopping
-4. Saves the trained model with joblib for fast reuse
-5. Accepts custom input as a key=value string and fills missing features with medians
+Use the predictor directly in Python:
+
+```python
+import cereal
+
+cereal.predict('fat=10, sodium=20, carbo=15')
+```
+
+Example:
+
+![Python API](demo/query2.png)
 
 ---
 
-## Project structure
+## Example Predictions
 
+| Input | Predicted Calories |
+|---|---|
+| sugars=3, protein=5 | 71 |
+| fat=10, sodium=20, carbo=15 | 268 |
+
+---
+
+## Plotting Loss
+
+Generate a training loss plot:
+
+```bash
+./cereal.py --plot
 ```
-cereal.py      - Main script
-cereal.csv     - Dataset (download from Kaggle)
-cereal.pt      - Saved model (generated after training)
-loss.png       - Loss curve (generated with --plot)
+
+This creates:
+
+```text
+loss.png
 ```
+
+![Python API](loss.png)
+
+---
+
+## Model Output
+
+The trained model is saved as:
+
+```text
+cereal.pt
+```
+
+---
+
+## Tech Stack
+
+- Python
+- PyTorch
+- pandas
+- matplotlib
+- scikit-learn
+
+---
+
+## Goals
+
+This project was built to practice:
+- ML training pipelines
+- Regression models
+- Feature parsing
+- Model serialization
+- CLI + Python interfaces
+- End-to-end ML workflows
+
+---
+
+## License
+
+MIT
